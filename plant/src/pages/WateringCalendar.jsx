@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { API_URL } from '../api';
 
 function WateringCalendar({ plants, setPlants }) {
 
@@ -24,7 +25,7 @@ function WateringCalendar({ plants, setPlants }) {
   const handleMarkAsWatered = async (plantId) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/plants/update-status/${plantId}`,
+        `${API_URL}/api/plants/update-status/${plantId}`,
         { waterStatus: "Watered recently" },
         { headers: { Authorization: `Bearer ${getToken()}` } }
       );

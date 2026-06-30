@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import WateringCalendar from './pages/WateringCalendar';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { API_URL } from './api';
 
 function App() {
   const [activeTab, setActiveTab]         = useState('dashboard');
@@ -40,7 +41,7 @@ function App() {
     const fetchPlants = async () => {
       try {
         const token = localStorage.getItem('leafyToken');
-        const response = await axios.get('http://localhost:5000/api/plants/all', {
+        const response = await axios.get(`${API_URL}/api/plants/all`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const formattedPlants = response.data.map(plant => ({
@@ -71,7 +72,7 @@ function App() {
     e.preventDefault();
     setAuthLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post(`${API_URL}/api/auth/register`, {
         username, email, password
       });
       if (response.data.success) {
@@ -91,7 +92,7 @@ function App() {
     e.preventDefault();
     setAuthLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         email, password
       });
       if (response.data.success) {

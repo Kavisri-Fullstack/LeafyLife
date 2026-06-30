@@ -3,6 +3,7 @@ import PlantCard from '../components/PlantCard';
 import swissCheeseImg from '../assets/swiss_cheese.jpg';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { API_URL } from '../api';
 
 function useScrollReveal() {
   useEffect(() => {
@@ -61,7 +62,7 @@ function Dashboard({ plants, setPlants }) {
   const fetchAllPlants = async () => {
     setFetchLoading(true);
     try {
-      const res = await axios.get('http://localhost:5000/api/plants/all', { headers: { Authorization: `Bearer ${localStorage.getItem('leafyToken')}` } });
+      const res = await axios.get(`${API_URL}/api/plants/all`, { headers: { Authorization: `Bearer ${localStorage.getItem('leafyToken')}` } });
       const formatted = res.data.map(plant => ({
         ...plant,
         id: plant._id,
@@ -86,7 +87,7 @@ function Dashboard({ plants, setPlants }) {
       image: newImage || swissCheeseImg
     };
     try {
-      const response = await axios.post('http://localhost:5000/api/plants/add', newPlantObj, { headers: { Authorization: `Bearer ${localStorage.getItem('leafyToken')}` } });
+      const response = await axios.post(`${API_URL}/api/plants/add`, newPlantObj, { headers: { Authorization: `Bearer ${localStorage.getItem('leafyToken')}` } });
       if (response.data.success) {
         toast.success("Plant added successfully!");
         await fetchAllPlants();
@@ -110,7 +111,7 @@ function Dashboard({ plants, setPlants }) {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/plants/update-status/${editPlant.id}`,
+        `${API_URL}/api/plants/update-status/${editPlant.id}`,
         { waterStatus: editPlant.waterStatus }
       );
       if (response.data.success) {
@@ -127,7 +128,7 @@ function Dashboard({ plants, setPlants }) {
   // DELETE plant
   const handleDeletePlant = async (plantId) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/plants/delete/${plantId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('leafyToken')}` } });
+      const response = await axios.delete(`${API_URL}/api/plants/delete/${plantId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('leafyToken')}` } });
       if (response.data.success) {
         toast.success("Plant deleted successfully!");
         setPlants(plants.filter(p => p._id !== plantId && p.id !== plantId));
